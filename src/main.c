@@ -16,11 +16,18 @@ void end_game(veil_t* veil, int curs_x, int curs_y) {
   }
   renderVeil(veil, curs_x, curs_y);
   printf("Unfortunately you have poked a bomb.\n");
-  char ch;
-  while(1) {
-    ch = getchar();
-    if (ch == 'K') break;
+  exit(0);
+}
+
+void check_win(veil_t* veil, int bomb_count, int curs_x, int curs_y) {
+  int indexc = veil->w * veil->h;
+  int bomb_incr = 0;
+  for (int i = 0; i < indexc; ++i) {
+    if (veil->veilItems[i] == FLAGGED && veil->field->fieldItems[i] == BOMB) bomb_incr++;
   }
+  if (bomb_incr < bomb_count) return;
+  renderVeil(veil, curs_x, curs_y);
+  printf("You have flagged all the bombs. Congratulations.\n");
   exit(0);
 }
 
@@ -32,7 +39,8 @@ int main(int argc, const char** argv) {
   int h = wind_size.ws_row - 5;
 
   field_t* field = createField(w, h);
-  populateField(field, w*h/7);
+  int bomb_count = w*h/14;
+  populateField(field, bomb_count);
   veil_t* veil = createVeil(w, h, field);
   char ch;
   int curs_x = 0;
@@ -73,20 +81,13 @@ int main(int argc, const char** argv) {
       }
       else if (ch == 'f') {
         flagVeil(veil, curs_x, curs_y);
+        check_win(veil, bomb_count, curs_x, curs_y);
         break;
       }
       else break;
     }
     usleep(125*1000);
   }
-  /*
-  flagVeil(veil, 5, 5);
-  for (int x = 0; x < 10; ++x) {
-    for (int y = 0; y < 10; ++y) {
-      pokeVeil(veil, x, y);
-    }
-  }
-  */
   deleteVeil(veil);
   deleteField(field);
   return 0;

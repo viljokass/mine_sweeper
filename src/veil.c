@@ -126,10 +126,10 @@ void crawl(veil_t* veil, int x, int y) {
   int res = pokeField(veil->field, x, y);
   if (res == 0) {
     veil->veilItems[current_veil_index] = 0;
-    crawl(veil, x-1, y);
-    crawl(veil, x+1, y);
-    crawl(veil, x, y-1);
-    crawl(veil, x, y+1);
+    crawl(veil, x-1, y);    crawl(veil, x+1, y);
+    crawl(veil, x, y-1);    crawl(veil, x, y+1);
+    crawl(veil, x-1, y-1);  crawl(veil, x-1, y+1);
+    crawl(veil, x+1, y-1);  crawl(veil, x+1, y+1);
   }
   if (res != -1) {
     veil->veilItems[current_veil_index] = res;

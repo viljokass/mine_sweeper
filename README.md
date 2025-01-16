@@ -2,8 +2,7 @@
 Mine sweeper in C.
 
 ## Current state
-Currently in a basic playable form.
-TODO: Bomb counter and winning
+Currently in a basic playable form. We can win and lose.
 
 ## Features
 Type a command queue to see how the cursor moves incrementally.
