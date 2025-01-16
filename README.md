@@ -7,6 +7,7 @@ TODO: Bomb counter and winning
 
 ## Features
 Type a command queue to see how the cursor moves incrementally.
+The size of the playing field is determined by the size of the terminal emulator.
 
 ## Controls
 wasd to move the cursor, p to poke and f to flag.

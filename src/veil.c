@@ -99,6 +99,9 @@ void flagVeil(veil_t* veil, int x, int y) {
   if (veil->veilItems[index] == HIDDEN) {
     veil->veilItems[index] = FLAGGED;
   }
+  else if (veil->veilItems[index] == FLAGGED) {
+    veil->veilItems[index] = HIDDEN;
+  }
 }
 
 /* Getter for veil item

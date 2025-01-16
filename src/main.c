@@ -39,7 +39,7 @@ int main(int argc, const char** argv) {
   int curs_y = 0;
   while(1) {
     renderVeil(veil, curs_x, curs_y);
-    printf("WASD to move cursor, p to poke and f to flag.\n");
+    printf("wasd to move cursor, p to poke and f to flag.\n");
     while(1) {
       ch = getchar();
       if (ch == 'w') {
