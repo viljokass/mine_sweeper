@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <time.h>
 #include "field.h"
 
 /* Field creator function.
@@ -38,6 +39,8 @@ RETURNS:
   none
 */
 void populateField(field_t* field, int amount) {
+  // Seed the random generator with time
+  srand(time(NULL));
   int amount_left = amount;
   int x, y;
   while (amount_left > 0) {
@@ -48,7 +51,7 @@ void populateField(field_t* field, int amount) {
       --amount_left;
       field->fieldItems[x + y * field->w] = BOMB;
     }
-  }
+  } 
 }
 
 /* FieldItem getter
@@ -62,4 +65,23 @@ fieldItem getFieldItem(field_t* field, int x, int y) {
   if (x < 0 || x > field->w - 1) return NOBOMB;
   if (y < 0 || y > field->h - 1) return NOBOMB;
   return field->fieldItems[x + y * field->w];
+}
+
+/* Poke the field
+PARAMS:
+  field_t* field - field to be poked
+  int x, y - poke coords
+RETURNS:
+  -1 if poked a bomb
+  otherwise, the count of bombs in the items surrounding it
+*/
+int pokeField(field_t* field, int x, int y) {
+  if (getFieldItem(field, x, y) == BOMB) return -1;
+  int bombs = 0;
+  for (int dy = -1; dy < 2; ++dy) {
+    for (int dx = -1; dx < 2; ++dx) {
+      if (getFieldItem(field, x+dx, y+dy) == BOMB) bombs++;
+    }
+  }
+  return bombs;
 }
