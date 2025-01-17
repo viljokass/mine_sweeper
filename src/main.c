@@ -45,9 +45,9 @@ int main(int argc, const char** argv) {
   char ch;
   int curs_x = 0;
   int curs_y = 0;
+  renderVeil(veil, curs_x, curs_y);
+  printf("wasd to move cursor, p to poke and f to flag, then enter\n");
   while(1) {
-    renderVeil(veil, curs_x, curs_y);
-    printf("wasd to move cursor, p to poke and f to flag.\n");
     while(1) {
       ch = getchar();
       if (ch == 'w') {
@@ -84,9 +84,12 @@ int main(int argc, const char** argv) {
         check_win(veil, bomb_count, curs_x, curs_y);
         break;
       }
-      else break;
+      else if (ch == '\n') {
+        renderVeil(veil, curs_x, curs_y);
+        printf("wasd to move cursor, p to poke and f to flag, then enter\n");
+      }
     }
-    usleep(125*1000);
+    // usleep(125*1000);
   }
   deleteVeil(veil);
   deleteField(field);
