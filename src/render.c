@@ -29,6 +29,7 @@ void renderVeil(veil_t* veil, int curs_x, int curs_y) {
   int w = min(wind_size.ws_col - 2, veil->w);
   int h = min(wind_size.ws_row - 2, veil->h);
   for (int x = 0; x < w + 2; ++x) printf(border_bg " " reset_bg);
+  printf("\n");
   for (int y = 0; y < h; ++y) {
     printf(border_bg " " reset_bg);
     for (int x = 0; x < w; ++x) {

@@ -17,11 +17,13 @@ bool end_game(veil_t* veil, int curs_x, int curs_y) {
 
 bool check_win(veil_t* veil, int bomb_count, int curs_x, int curs_y) {
   int indexc = veil->w * veil->h;
-  int bomb_incr = 0;
+  int flagged_bomb_incr = 0;
+  int flag_incr = 0;
   for (int i = 0; i < indexc; ++i) {
-    if (veil->veilItems[i] == FLAGGED && veil->field->fieldItems[i] == BOMB) bomb_incr++;
+    if (veil->veilItems[i] == FLAGGED) flag_incr++;
+    if (veil->veilItems[i] == FLAGGED && veil->field->fieldItems[i] == BOMB) flagged_bomb_incr++;
   }
-  if (bomb_incr < bomb_count) return true;
+  if (flagged_bomb_incr != bomb_count || flag_incr != bomb_count) return true;
   revealAll(veil);
   renderVeil(veil, curs_x, curs_y);
   printf("You have flagged all the mines. Congratulations.\n");
@@ -33,7 +35,6 @@ int main(int argc, const char** argv) {
   ioctl(STDOUT_FILENO, TIOCGWINSZ, &wind_size);
   int w = wind_size.ws_col - 2;
   int h = wind_size.ws_row - 5;
-
   field_t* field = createField(w, h);
   int bomb_count = w*h/10;
   populateField(field, bomb_count);
