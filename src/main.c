@@ -8,27 +8,26 @@
 #include "veil.h"
 #include "render.h"
 
-void end_game(veil_t* veil, int curs_x, int curs_y) {
+bool end_game(veil_t* veil, int curs_x, int curs_y) {
   revealAll(veil); 
   renderVeil(veil, curs_x, curs_y);
-  printf("Unfortunately you have poked a bomb.\n");
-  exit(0);
+  printf("Unfortunately you have poked a mine.\n");
+  return false;
 }
 
-void check_win(veil_t* veil, int bomb_count, int curs_x, int curs_y) {
+bool check_win(veil_t* veil, int bomb_count, int curs_x, int curs_y) {
   int indexc = veil->w * veil->h;
   int bomb_incr = 0;
   for (int i = 0; i < indexc; ++i) {
     if (veil->veilItems[i] == FLAGGED && veil->field->fieldItems[i] == BOMB) bomb_incr++;
   }
-  if (bomb_incr < bomb_count) return;
+  if (bomb_incr < bomb_count) return true;
   revealAll(veil);
   renderVeil(veil, curs_x, curs_y);
-  printf("You have flagged all the bombs. Congratulations.\n");
-  exit(0);
+  printf("You have flagged all the mines. Congratulations.\n");
+  return false;
 }
 
-// Currently creates a field, populates it, prints it and deletes it.
 int main(int argc, const char** argv) {
   struct winsize wind_size;
   ioctl(STDOUT_FILENO, TIOCGWINSZ, &wind_size);
@@ -44,7 +43,9 @@ int main(int argc, const char** argv) {
   int curs_y = 0;
   renderVeil(veil, curs_x, curs_y);
   printf("wasd to move cursor, p to poke and f to flag, then enter\n");
-  while(1) {
+
+  bool loop = true;
+  while(loop) {
     while(1) {
       ch = getchar();
       if (ch == 'w') {
@@ -73,12 +74,12 @@ int main(int argc, const char** argv) {
       }
       else if (ch == 'p') {
         int poke = pokeVeil(veil, curs_x, curs_y);
-        if (poke == -1) end_game(veil, curs_x, curs_y);
+        if (poke == -1) loop = end_game(veil, curs_x, curs_y);
         break;
       }
       else if (ch == 'f') {
         flagVeil(veil, curs_x, curs_y);
-        check_win(veil, bomb_count, curs_x, curs_y);
+        loop = check_win(veil, bomb_count, curs_x, curs_y);
         break;
       }
       else if (ch == '\n') {
