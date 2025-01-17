@@ -9,11 +9,7 @@
 #include "render.h"
 
 void end_game(veil_t* veil, int curs_x, int curs_y) {
-  for (int x = 0; x < veil->w; ++x) {
-    for (int y = 0; y < veil->h; ++y) {
-      pokeVeil(veil, x, y);
-    }
-  }
+  revealAll(veil); 
   renderVeil(veil, curs_x, curs_y);
   printf("Unfortunately you have poked a bomb.\n");
   exit(0);
@@ -26,6 +22,7 @@ void check_win(veil_t* veil, int bomb_count, int curs_x, int curs_y) {
     if (veil->veilItems[i] == FLAGGED && veil->field->fieldItems[i] == BOMB) bomb_incr++;
   }
   if (bomb_incr < bomb_count) return;
+  revealAll(veil);
   renderVeil(veil, curs_x, curs_y);
   printf("You have flagged all the bombs. Congratulations.\n");
   exit(0);
@@ -39,7 +36,7 @@ int main(int argc, const char** argv) {
   int h = wind_size.ws_row - 5;
 
   field_t* field = createField(w, h);
-  int bomb_count = w*h/14;
+  int bomb_count = w*h/10;
   populateField(field, bomb_count);
   veil_t* veil = createVeil(w, h, field);
   char ch;

@@ -135,3 +135,11 @@ void crawl(veil_t* veil, int x, int y) {
     veil->veilItems[current_veil_index] = res;
   }
 }
+
+void revealAll(veil_t* veil) {
+  for (int y = 0; y < veil->h; ++y) {
+    for (int x = 0; x < veil->w; ++x) {
+      pokeVeil(veil, x, y);
+    }
+  }
+}

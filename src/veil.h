@@ -17,3 +17,4 @@ void    printVeil(veil_t* veil);
 int     pokeVeil(veil_t* veil, int x, int y);
 void    flagVeil(veil_t* veil, int x, int y);
 int     getVeilItem(veil_t* veil, int x, int y);
+void    revealAll(veil_t* veil);
